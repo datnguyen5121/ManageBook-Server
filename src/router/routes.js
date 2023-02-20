@@ -1,4 +1,5 @@
 import bookController from "../controller/bookController.js";
+import cartController from "../controller/cartController.js";
 import userController from "../controller/userController.js";
 import JWTaction from "../middleware/JWTaction.js";
 
@@ -34,6 +35,11 @@ const routes = (app) => {
   app.put("/api/update-user-by-id", userController.updateUserById);
   app.post("/api/handle-login", userController.handleUserLogin);
   app.post("/refresh-token", userController.getTokenRefresh);
+
+  app.get("/api/get-all-cart", cartController.getAllCart);
+  app.put("/api/add-update-cart", cartController.AddUpdateCart);
+  app.delete("/api/delete-all-cart", cartController.deleteAllCart);
+  app.delete("/api/delete-cart", cartController.deleteCart);
 };
 
 export default routes;
