@@ -36,8 +36,11 @@ const routes = (app) => {
   app.post("/api/handle-login", userController.handleUserLogin);
   app.post("/refresh-token", userController.getTokenRefresh);
 
+  //Cart
   app.get("/api/get-all-cart", cartController.getAllCart);
-  app.put("/api/add-update-cart", cartController.AddUpdateCart);
+  app.post("/api/add-update-cart", cartController.AddUpdateCart);
+  app.post("/api/update-cart-by-id", cartController.updateCartById);
+
   app.delete("/api/delete-all-cart", cartController.deleteAllCart);
   app.delete("/api/delete-cart", cartController.deleteCart);
 };

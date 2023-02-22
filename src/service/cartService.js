@@ -1,6 +1,6 @@
 import Cart from "../model/cart.js";
 
-let getAllCart = () => {
+let getAllCart = (email) => {
   return new Promise(async (resolve, reject) => {
     try {
       const data = await Cart.find(
@@ -17,33 +17,22 @@ let getAllCart = () => {
     }
   });
 };
-let addCart = (data) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      console.log("service", data);
-      const result = await Cart.create({
-        bookId: data.bookId,
-        quantity: data.quantity,
-      });
-      resolve({
-        EC: 0,
-        EM: "create new cart success!",
-        data: result,
-      });
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
+
 let updateCartById = (inputId, inputData) => {
   return new Promise(async (resolve, reject) => {
+    console.log("inputData", inputData);
     try {
-      const data = await Cart.findByIdAndUpdate(
+      const data = await Cart.findOneAndUpdate(
         { bookId: inputId },
         {
-          quantity: inputData.quantity,
+          quantity: inputData,
+        },
+        {
+          new: true,
         },
       );
+
+      console.log("data", data);
       resolve({
         EC: 0,
         EM: "update the cart success!",
@@ -70,7 +59,6 @@ let deleteAllCart = () => {
 };
 const cartService = {
   getAllCart,
-  addCart,
   deleteAllCart,
   updateCartById,
 };

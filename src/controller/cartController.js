@@ -1,7 +1,9 @@
 import cartService from "../service/cartService.js";
+import Cart from "../model/cart.js";
 let getAllCart = async (req, res) => {
   try {
-    const data = await cartService.getAllCart();
+    const email = req.query.email;
+    const data = await cartService.getAllCart(email);
     if (data) {
       return res.status(200).json(data);
     } else {
@@ -18,7 +20,7 @@ let AddUpdateCart = async (req, res) => {
   try {
     const cartData = req.body;
     const result = await Cart.findOne({
-      userName: cartData.userName,
+      email: cartData.email,
       bookId: cartData.bookId,
     });
     if (result) {
@@ -31,7 +33,7 @@ let AddUpdateCart = async (req, res) => {
       });
     } else {
       const rs = await Cart.create({
-        userName: cartData.userName,
+        email: cartData.email,
         bookId: cartData.bookId,
         quantity: cartData.quantity,
       });
@@ -51,7 +53,7 @@ let AddUpdateCart = async (req, res) => {
 
 let deleteAllCart = async (req, res) => {
   try {
-    const data = await bookService.deleteAllCart();
+    const data = await cartService.deleteAllCart();
     if (data) {
       return res.status(200).json(data);
     } else {
@@ -83,10 +85,28 @@ const deleteCart = async (req, res) => {
     });
   }
 };
+let updateCartById = async (req, res) => {
+  try {
+    let bookId = req.body.bookId;
+    let quantity = req.body.quantity;
+    const data = await cartService.updateCartById(bookId, quantity);
+    if (data) {
+      return res.status(200).json(data);
+    } else {
+      throw new Error("update the cart failed!");
+    }
+  } catch (e) {
+    return res.status(500).json({
+      EC: 1,
+      EM: e.message,
+    });
+  }
+};
 const cartController = {
   getAllCart,
   deleteAllCart,
   AddUpdateCart,
   deleteCart,
+  updateCartById,
 };
 export default cartController;
