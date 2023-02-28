@@ -33,6 +33,40 @@ let getBookPaginate = async (req, res) => {
   }
 };
 
+let getBookPaginateType = async (req, res) => {
+  try {
+    let dataReq = req.query;
+    console.log("dat", dataReq);
+    const data = await bookService.getBookPaginateType(dataReq);
+    if (data) {
+      return res.status(200).json(data);
+    } else {
+      throw new Error("There are no book!");
+    }
+  } catch (e) {
+    return res.status(500).json({
+      EC: 1,
+      EM: e.message,
+    });
+  }
+};
+let getBookPaginateSearch = async (req, res) => {
+  try {
+    let dataReq = req.query;
+    console.log("dat", dataReq);
+    const data = await bookService.getBookPaginateSearch(dataReq);
+    if (data) {
+      return res.status(200).json(data);
+    } else {
+      throw new Error("There are no book!");
+    }
+  } catch (e) {
+    return res.status(500).json({
+      EC: 1,
+      EM: e.message,
+    });
+  }
+};
 let createNewBook = async (req, res) => {
   try {
     let dataReq = req.body;
@@ -121,6 +155,8 @@ const bookController = {
   deleteAllBook,
   updateBookById,
   getBookPaginate,
+  getBookPaginateType,
+  getBookPaginateSearch,
 };
 
 export default bookController;

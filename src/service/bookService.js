@@ -40,6 +40,52 @@ let getBookPaginate = (dataInput) => {
     }
   });
 };
+let getBookPaginateType = (dataInput) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let perPage = 5; // số lượng sản phẩm xuất hiện trên 1 page
+      // let page = 1;
+      let total;
+      const listBook = await Book.find({
+        category: dataInput.category,
+      })
+        .skip(dataInput.limit * dataInput.page - dataInput.limit) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
+        .limit(dataInput.limit);
+      if (listBook && listBook.length > 0) {
+        total = listBook.length;
+      }
+      resolve({
+        EC: 0,
+        EM: "Get the book success!",
+        data: { listBook, total },
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+let getBookPaginateSearch = (dataInput) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // let perPage = 5; // số lượng sản phẩm xuất hiện trên 1 page
+      // let page = 1;
+      let total;
+      const listBook = await Book.find({ $text: { $search: dataInput.valueText } })
+        .skip(dataInput.limit * dataInput.page - dataInput.limit) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
+        .limit(dataInput.limit);
+      if (listBook && listBook.length > 0) {
+        total = listBook.length;
+      }
+      resolve({
+        EC: 0,
+        EM: "Get the book success!",
+        data: { listBook, total },
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 let createNewBook = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -137,8 +183,10 @@ const bookService = {
   createNewBook,
   getBookById,
   deleteBookById,
+  getBookPaginateSearch,
   deleteAllBook,
   updateBookById,
   getBookPaginate,
+  getBookPaginateType,
 };
 export default bookService;

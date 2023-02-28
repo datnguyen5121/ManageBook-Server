@@ -16,6 +16,7 @@ let handleUserLogin = async (req, res) => {
     res.cookie("jwt", data.DT.access_token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
+      // maxAge: 1,
     });
     res.cookie("jwt_refresh", data.DT.refresh_token, {
       httpOnly: true,
@@ -138,7 +139,21 @@ let getTokenRefresh = async (req, res) => {
     }
   });
 };
-
+const handleUserRegister = (req, res) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let dataReq = req.body;
+      const data = await userService.handleUserRegister(dataReq);
+      if (data) {
+        return res.status(200).json(data);
+      } else {
+        throw new Error("register the user failed!");
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 const userController = {
   handleUserLogin,
   getAllUser,
@@ -147,5 +162,6 @@ const userController = {
   deleteAllUser,
   updateUserById,
   getTokenRefresh,
+  handleUserRegister,
 };
 export default userController;

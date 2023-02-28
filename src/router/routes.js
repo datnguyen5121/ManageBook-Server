@@ -14,6 +14,8 @@ const routes = (app) => {
   );
   // app.get("/api/get-all-book", bookController.getAllBook);
   app.get("/api/get-book-paginate", bookController.getBookPaginate);
+  app.get("/api/get-book-paginate-type", bookController.getBookPaginateType);
+  app.get("/api/get-book-paginate-search", bookController.getBookPaginateSearch);
 
   // app.post("/api/create-new-book", JWTaction.checkUserJWT, bookController.createNewBook);
   app.post("/api/create-new-book", bookController.createNewBook);
@@ -34,6 +36,8 @@ const routes = (app) => {
   app.delete("/api/delete-all-user", userController.deleteAllUser);
   app.put("/api/update-user-by-id", userController.updateUserById);
   app.post("/api/handle-login", userController.handleUserLogin);
+  app.post("/api/handle-register", userController.handleUserRegister);
+
   app.post("/refresh-token", userController.getTokenRefresh);
 
   //Cart

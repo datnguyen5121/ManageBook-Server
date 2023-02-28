@@ -47,7 +47,7 @@ const checkUserJWT = (req, res, next) => {
       next();
     } else {
       return res.status(401).json({
-        EC: -1,
+        EC: -999,
         data: "",
         EM: "Not authenticated the user",
       });
@@ -55,7 +55,7 @@ const checkUserJWT = (req, res, next) => {
     console.log("my jwt: ", cookies.jwt);
   } else {
     return res.status(401).json({
-      EC: -1,
+      EC: -999,
       data: "",
       EM: "Not authenticated the user",
     });
@@ -99,7 +99,7 @@ const checkADMINPermission = (req, res, next) => {
     // }
   } else {
     return res.status(401).json({
-      EC: -1,
+      EC: -999,
       data: "",
       EM: "Not authenticated the user",
     });
@@ -123,7 +123,7 @@ const checkUserPermission = (req, res, next) => {
     next();
   } else {
     return res.status(401).json({
-      EC: -1,
+      EC: -999,
       DT: "",
       EM: "Not authenticated the user",
     });

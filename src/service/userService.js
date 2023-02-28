@@ -109,7 +109,38 @@ let getAllUser = () => {
     }
   });
 };
-
+let handleUserRegister = (data) => {
+  return new Promise(async (resolve, reject) => {
+    let passwordNotHash = data.password;
+    let passwordHash = await hashUserPassword(passwordNotHash);
+    let isExist = await checkEmailUser(data.email);
+    try {
+      if (isExist === false) {
+        const result = await User.create({
+          email: data.email,
+          password: passwordHash,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          address: data.address,
+          gender: data.gender,
+          roleId: "USER",
+        });
+        resolve({
+          EC: 0,
+          EM: "register new user success!",
+          data: result,
+        });
+      } else {
+        resolve({
+          EC: 1,
+          EM: "register new user false!",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 let createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
     let passwordNotHash = data.password;
@@ -196,5 +227,6 @@ const UserService = {
   deleteUserById,
   deleteAllUser,
   updateUserById,
+  handleUserRegister,
 };
 export default UserService;

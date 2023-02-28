@@ -27,7 +27,7 @@ let AddUpdateCart = async (req, res) => {
       result.quantity = Number(result.quantity) + Number(cartData.quantity);
       await result.save();
       return res.status(200).json({
-        errCode: 0,
+        EC: 0,
         errMessage: "Add to cart success!",
         data: result,
       });
@@ -38,7 +38,7 @@ let AddUpdateCart = async (req, res) => {
         quantity: cartData.quantity,
       });
       return res.status(200).json({
-        errCode: 0,
+        EC: 0,
         errMessage: "Add to cart success!",
         data: rs,
       });
@@ -69,18 +69,19 @@ let deleteAllCart = async (req, res) => {
 const deleteCart = async (req, res) => {
   try {
     const cartData = req.body;
+
     const result = await Cart.findOneAndDelete({
       email: cartData.email,
       bookId: cartData.bookId,
     });
     return res.status(200).json({
-      errCode: 0,
+      EC: 0,
       errMessage: "Delete this cart success!",
       data: result,
     });
   } catch (e) {
     return res.status(500).json({
-      errCode: 1,
+      EC: 1,
       errMessage: e.message,
     });
   }

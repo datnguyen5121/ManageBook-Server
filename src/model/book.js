@@ -16,5 +16,7 @@ const bookSchema = new Schema(
     timestamps: true,
   },
 );
+bookSchema.index({ title: "text" });
 
+// bookSchema.index({ "$**": "text" }); // này là tìm tất cả
 export default mongoose.model("Book", bookSchema);
