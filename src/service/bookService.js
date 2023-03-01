@@ -1,5 +1,5 @@
 import Book from "../model/book.js";
-
+import escapeStringRegexp from "escape-string-regexp";
 let getAllBook = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -70,12 +70,22 @@ let getBookPaginateSearch = (dataInput) => {
       // let perPage = 5; // số lượng sản phẩm xuất hiện trên 1 page
       // let page = 1;
       let total;
-      const listBook = await Book.find({ $text: { $search: dataInput.valueText } })
+      const $regex = escapeStringRegexp(dataInput.valueText);
+      console.log($regex);
+      const listBookTotal = await Book.find({
+        title: { $regex },
+      });
+      if (listBookTotal && listBookTotal.length > 0) {
+        total = listBookTotal.length;
+      }
+
+      const listBook = await Book.find({
+        title: { $regex },
+      })
+        //   // $text: { $search: dataInput.valueText }, .. tìm kiếm full -text
         .skip(dataInput.limit * dataInput.page - dataInput.limit) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
         .limit(dataInput.limit);
-      if (listBook && listBook.length > 0) {
-        total = listBook.length;
-      }
+
       resolve({
         EC: 0,
         EM: "Get the book success!",
